@@ -1,4 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
+import { PostType } from "./type";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +36,56 @@ export const fetchPosts = async ({
 
   if (!response.ok) {
     throw new Error("An error occurred while fetching the posts");
+  }
+
+  return response.json();
+};
+
+// Create New Post
+export const createNewPost = async (body: PostType) => {
+  const response = await fetch(POST_URL, {
+    method: "POST",
+    body: JSON.stringify(body),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("An error occurred while creating the post");
+  }
+
+  return response.json();
+};
+
+// Edit Post by Id
+export const updatePostById = async (body: PostType) => {
+  const response = await fetch(`${POST_URL}/${body.id}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      title: body.title,
+      body: body.body,
+      userId: body.userId,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `An error occurred while updating the post with id: ${body.id}`
+    );
+  }
+
+  return response.json();
+};
+
+// Delete Post By Id
+export const deletePostById = async (id: number) => {
+  const response = await fetch(`${POST_URL}/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error(`An error occurred while updating the post with id: ${id}`);
   }
 
   return response.json();
