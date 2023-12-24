@@ -5,6 +5,20 @@ export type PostType = {
   userId: number;
 };
 
+export type AlbumType = {
+  id: number;
+  title: string;
+  useId: number;
+};
+
+export type PhotoType = {
+  id: number;
+  title: string;
+  url: string;
+  thumbnailUrl: string;
+  albumId: number;
+};
+
 export type UserType = {
   id: number;
   name: string;

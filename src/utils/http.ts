@@ -10,6 +10,7 @@ export const queryClient = new QueryClient({
 });
 
 const POST_URL = `${import.meta.env.VITE_API_URL}/posts`;
+const ALBUM_URL = `${import.meta.env.VITE_API_URL}/albums`;
 const USER_URL = `${import.meta.env.VITE_API_URL}/users`;
 
 // Fetch Posts
@@ -86,6 +87,52 @@ export const deletePostById = async (id: number) => {
 
   if (!response.ok) {
     throw new Error(`An error occurred while updating the post with id: ${id}`);
+  }
+
+  return response.json();
+};
+
+// Fetch Albums
+export const fetchAlbums = async ({
+  signal,
+  userId,
+}: {
+  signal: AbortSignal;
+  userId?: number | undefined;
+}) => {
+  let newUrl = ALBUM_URL;
+
+  if (userId) {
+    newUrl = `${ALBUM_URL}/?userId=${userId}`;
+  }
+
+  const response = await fetch(newUrl, { signal: signal });
+
+  if (!response.ok) {
+    throw new Error("An error occurred while fetching the albums");
+  }
+
+  return response.json();
+};
+
+// Fetch Photos By Album Id
+export const fetchPhotosByAlbumId = async ({
+  signal,
+  albumId,
+}: {
+  signal: AbortSignal;
+  albumId: string | undefined;
+}) => {
+  if (!albumId) return null;
+
+  const response = await fetch(`${ALBUM_URL}/${albumId}/photos`, {
+    signal: signal,
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `An error occurred while fetching the photos with id:${albumId}`
+    );
   }
 
   return response.json();
