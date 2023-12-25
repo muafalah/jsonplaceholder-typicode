@@ -5,6 +5,14 @@ export type PostType = {
   userId: number;
 };
 
+export type CommentType = {
+  id: number | undefined;
+  name: string;
+  email: string;
+  body: string;
+  postId: number;
+};
+
 export type AlbumType = {
   id: number;
   title: string;
